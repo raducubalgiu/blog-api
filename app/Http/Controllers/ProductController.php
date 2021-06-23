@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::with('productDetails')->get();
+        return Product::with('productDetails', 'supercategory', 'brand', 'reviews')->get();
     }
 
     /**
@@ -26,10 +26,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::create($request->only('product_name', 'product_image', 'product_price', 'subcategory_id', 'brand_id'));
+
+        $product = Product::create($request->only('product_name', 'product_image', 'product_price', 'supercategory_id', 'category_id', 'subcategory_id', 'brand_id'));
 
         $product->productDetails()->create([
-            'product_description' => $request->input('product_description'),
             'product_color' => $request->input('product_color'),
             'product_material'=> $request->input('product_material'),
             'product_style' => $request->input('product_style'),
@@ -47,7 +47,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        return $product->with('productDetails')->first();
     }
 
     /**
@@ -60,6 +60,12 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->only('product_name', 'product_image', 'product_price'));
+
+        $product->productDetails()->create([
+            'product_color' => $request->input('product_color'),
+            'product_material'=> $request->input('product_material'),
+            'product_style' => $request->input('product_style')
+        ]);
 
         return response($product, Response::HTTP_ACCEPTED);
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Order;
 
 /**
  * App\Models\User
@@ -38,6 +39,15 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User subscribers()
  * @method static \Illuminate\Database\Eloquent\Builder|User admins()
+ * @property string|null $image
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereImage($value)
+ * @property-read mixed $user_sales
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
+ * @property-read int|null $likes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
+ * @property-read int|null $reviews_count
  */
 class User extends Authenticatable
 {
@@ -59,5 +69,21 @@ class User extends Authenticatable
     // This function can be called like - admins()
     public function scopeAdmins($query) {
         return $query->where('is_admin', 1);
+    }
+
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
+
+    public function likes() {
+        return $this->hasMany(Like::class);
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+
+    public function getSubscriberSalesAttribute() {
+        return $this->orders->sum(fn(Order $order) => $order->subscriber_sales);
     }
 }

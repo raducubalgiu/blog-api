@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Supercategory;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,8 +27,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($request->only('name', 'slug'));
+        // Create Category
+        $category = Category::create($request->only('name', 'supercategory_id'));
 
+        // Get all supercategories
+        $supercategories = Supercategory::all();
+
+        // Attach categories to subcategories in many to many relantionship
+        foreach($supercategories as $supercategory) {
+            $supercategory->categories()->attach($category->id);
+        }
+
+        // return response
         return response($category, Response::HTTP_CREATED);
     }
 
@@ -51,7 +62,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category->update($request->only('name', 'slug'));
+        $category->update($request->only('name', 'supercategory_id'));
 
         return response($category, Response::HTTP_ACCEPTED);
     }

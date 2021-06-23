@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +47,7 @@ class AuthController extends Controller
 
         $jwt = $user->createToken('token', [$scope])->plainTextToken;
 
-        $cookie = cookie('jwt', $jwt, 60*24); // 1 day
+        $cookie = cookie('jwt', $jwt, 60*2); // 1 day
 
        return response([
            'message' => 'success'
@@ -54,7 +55,9 @@ class AuthController extends Controller
     }
 
     public function user(Request $request) {
-        return $request->user();
+        $user = $request->user();
+
+        return new UserResource($user);
     }
 
     public function logout() {

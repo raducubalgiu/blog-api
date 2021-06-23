@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Subcategory;
 use App\Models\Supercategory;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SubcategoryController extends Controller
+class SupercategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +15,7 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-        return Subcategory::all();
+        return Supercategory::all();
     }
 
     /**
@@ -28,47 +26,46 @@ class SubcategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Create subcategory
-        $subcategory = Subcategory::create($request->only('name', 'category_id'));
+        $supercategory = Supercategory::create($request->only('name'));
 
-        return response($subcategory, Response::HTTP_CREATED);
+        return response($supercategory, Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Subcategory  $subcategory
+     * @param  \App\Models\Supercategory  $supercategory
      * @return \Illuminate\Http\Response
      */
-    public function show(Subcategory $subcategory)
+    public function show(Supercategory $supercategory)
     {
-        return $subcategory;
+        return $supercategory;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Subcategory  $subcategory
+     * @param  \App\Models\Supercategory  $supercategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subcategory $subcategory)
+    public function update(Request $request, Supercategory $supercategory)
     {
-        $subcategory->update($request->only('name', 'category_id'));
+        $supercategory->update($request->only('name'));
 
-        return response($subcategory, Response::HTTP_ACCEPTED);
+        return response($supercategory, Response::HTTP_ACCEPTED);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Subcategory  $subcategory
+     * @param  \App\Models\Supercategory  $supercategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subcategory $subcategory)
+    public function destroy(Supercategory $supercategory)
     {
-        $subcategory->delete();
+        $supercategory->delete();
 
-        return response($subcategory, Response::HTTP_NO_CONTENT);
+        return response($supercategory, Response::HTTP_NO_CONTENT);
     }
 }
