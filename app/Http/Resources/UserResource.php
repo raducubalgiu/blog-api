@@ -20,10 +20,8 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'image' => $this->image,
-            $this->mergeWhen($request->path() === 'api/subscriber/user', [
-                'subscriber_sales' => $this->subscriber_sales
-            ])
-    
+            'created_at' => $this->created_at,
+            'subscriber_sales' => number_format($this->subscriber_sales, 2)
         ];
     }
 }

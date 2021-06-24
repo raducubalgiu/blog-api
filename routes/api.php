@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\SupercategoryController;
@@ -33,6 +34,7 @@ Route::prefix('admin')->group(function() {
     Route::middleware(['auth:sanctum', 'scope.admin'])->group(function() {
         Route::get('subscribers', [SubscriberController::class, 'index']);
         Route::get('orders', [OrderController::class, 'index']);
+        Route::get('dashboard', [DashboardController::class, 'index']);
         Route::apiResource('brands', BrandController::class);
         Route::apiResource('supercategories', SupercategoryController::class);
         Route::apiResource('categories', CategoryController::class);

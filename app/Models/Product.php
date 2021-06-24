@@ -79,4 +79,8 @@ class Product extends Model
     public function likes() {
         return $this->hasMany(Like::class);
     }
+
+    public function getAverageReviewAttribute() {
+        return round($this->reviews->average(fn(Review $review) => $review->stars), 0);
+    }
 }

@@ -10,6 +10,6 @@ use Illuminate\Http\Request;
 class SubscriberController extends Controller
 {
     public function index() {
-        return User::subscribers()->get();
+        return UserResource::collection(User::where('is_admin', 0)->paginate(10));
     }
 }

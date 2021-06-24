@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::with('productDetails', 'supercategory', 'brand', 'reviews')->get();
+        //return Product::with('productDetails', 'supercategory', 'brand', 'reviews')->get();
+        return ProductResource::collection(Product::with('productDetails', 'supercategory', 'brand', 'reviews')->get());
     }
 
     /**
